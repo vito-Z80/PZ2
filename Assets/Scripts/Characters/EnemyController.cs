@@ -6,11 +6,9 @@ using Random = UnityEngine.Random;
 
 namespace Characters
 {
-    public class EnemyController : MonoBehaviour
+    public class EnemyController : MainCharacter
     {
         Vector2 m_direction;
-
-        // Transform m_target;
         Rigidbody2D m_rigidbody2D;
         HealthBar m_healthBar;
         [SerializeField] Transform flippedTransform;
@@ -67,24 +65,26 @@ namespace Characters
         }
 
 
-        public void Damage(int value)
+        public override void Damage(int value)
         {
             data.Health -= value;
             m_healthBar.UpdateHealth(-value);
             if (data.Health <= 0)
             {
                 data.Health = 0;
+                GameManager.I.Spawner.SpawnRandomItem(transform.position);
                 Dead();
             }
         }
 
-        void Dead()
+        public override void AddHealth(int health)
         {
-            if (gameObject)
-            {
-                Destroy(gameObject);
-                GameManager.I.Spawner.SpawnRandomItem(transform.position);
-            }
+            
+        }
+
+        public override void Fire()
+        {
+            
         }
     }
 }

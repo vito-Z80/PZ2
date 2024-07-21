@@ -1,14 +1,15 @@
 {
   "WeaponData": [
     {
-      "Attack": 13,
+      "Attack": 17,
       "Range": 0.0,
-      "Speed": 2.0,
-      "Durability": 0,
+      "Speed": 5.0,
+      "Durability": 1000,
       "Level": 0,
       "Guid": "7374e364-caab-458b-aa6b-525108dcd02c",
       "Name": "AK",
-      "Type": "Machine"
+      "Type": "Machine",
+      "Radius": 5.0
     }
   ],
   "CharacterData": [

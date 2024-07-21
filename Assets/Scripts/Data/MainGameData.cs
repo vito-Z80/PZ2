@@ -2,6 +2,7 @@
 
 namespace Data
 {
+    [Serializable]
     public class MainGameData
     {
         public Guid Guid;

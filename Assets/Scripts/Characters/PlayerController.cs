@@ -1,26 +1,23 @@
 using System;
+using System.Collections.Generic;
+using Core;
 using Data;
 using UI;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Weapon;
-
-//  нарезка коллайдеров в спрайтэдиторе
-//  https://forum.unity.com/threads/the-problem-of-colliders-on-tilemap.1288397/
 
 namespace Characters
 {
-    public class PlayerController : MonoBehaviour
+    public class PlayerController : MainCharacter
     {
-        [SerializeField] float moveSpeed = 5f;
-        Rigidbody2D m_rb;
-        [SerializeField] Vector2 m_direction;
         HealthBar m_healthBar;
+        [SerializeField] Transform m_weaponPoint;
+        [SerializeField] Transform m_weaponRadiusSprite;
         [SerializeField] CharacterData data;
-        [SerializeField] Gun weapon;
-
-
+        [SerializeField] Gun equippedWeapon;
         [SerializeField] bl_Joystick joystick;
+        List<Guid> m_availableWeapons = new List<Guid>() { new Guid("7374e364-caab-458b-aa6b-525108dcd02c") };
+
 
         public void Init(CharacterData characterData)
         {
@@ -35,31 +32,43 @@ namespace Characters
                 Speed = characterData.Speed,
                 Level = characterData.Level
             };
-            m_rb = GetComponent<Rigidbody2D>();
             m_healthBar = GetComponentInChildren<HealthBar>();
             m_healthBar.SetMaxHealth(data.Health);
+            EquipWeapon(m_availableWeapons[0]);
         }
 
+
+        void EquipWeapon(Guid weaponGuid)
+        {
+            equippedWeapon = GameManager.I.Spawner.SpawnWeapon<Gun>(weaponGuid, m_weaponPoint.position, m_weaponPoint);
+            equippedWeapon.Init(GameManager.I.Data.GetWeaponData(weaponGuid));
+            var weaponRadiusSprite = equippedWeapon.GetDamageRadius() - 1;
+            m_weaponRadiusSprite.localScale = new Vector3(weaponRadiusSprite, weaponRadiusSprite, weaponRadiusSprite);
+        }
 
         void Update()
         {
 #if UNITY_ANDROID && !UNITY_EDITOR
-            m_direction.x = joystick.Horizontal;
-            m_direction.y = joystick.Vertical;
+            direction.x = joystick.Horizontal;
+            direction.y = joystick.Vertical;
 #else
-            m_direction.x = Input.GetAxis("Horizontal");
-            m_direction.y = Input.GetAxis("Vertical");
+            direction.x = Input.GetAxis("Horizontal");
+            direction.y = Input.GetAxis("Vertical");
 #endif
         }
 
-
         void FixedUpdate()
         {
-            m_rb.MovePosition(m_rb.position + m_direction * (moveSpeed * Time.fixedDeltaTime));
+            Rigidbody.MovePosition(Rigidbody.position + direction * (data.Speed * Time.fixedDeltaTime));
         }
 
 
-        public void Damage(int value)
+        public float GetWeaponRadius()
+        {
+            return equippedWeapon.GetDamageRadius();
+        }
+
+        public override void Damage(int value)
         {
             data.Health -= value;
             m_healthBar.UpdateHealth(-value);
@@ -70,10 +79,18 @@ namespace Characters
             }
         }
 
-        void Dead()
+        public override void AddHealth(int health)
         {
-            if (gameObject)
-                Destroy(gameObject);
+            data.Health += health;
+        }
+
+        public override void Fire()
+        {
+            if (equippedWeapon)
+            {
+                var target = GameManager.I.GetNearestEnemy();
+                equippedWeapon.Fire(target, 1.0f);
+            }
         }
     }
 }

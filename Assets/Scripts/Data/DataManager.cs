@@ -14,7 +14,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace Data
 {
-    public class DataManager 
+    public class DataManager
     {
         string m_jsonPath = "Assets/Resources/game_data.json";
         GameDataLibrary m_gameDataLibrary;
@@ -34,7 +34,7 @@ namespace Data
         //     await Init();
         // }
 
-        
+
         public async Task Init()
         {
             m_gameDataLibrary = LoadGameData() ?? throw new NullReferenceException("Failed to load game data.");
@@ -50,10 +50,16 @@ namespace Data
             ItemPrefab = await LoadAsset<GameObject>("Item");
         }
 
-        public EnemyData[] GetEnemies() => m_gameDataLibrary.EnemyData;
-        public CharacterData[] GetCharacters() => m_gameDataLibrary.CharacterData;
-        public ItemData[] GetItems() => m_gameDataLibrary.ItemData;
-        public WeaponData[] GetWeapons() => m_gameDataLibrary.WeaponData;
+        public EnemyData[] GetEnemiesData() => m_gameDataLibrary.EnemyData;
+        public CharacterData[] GetCharactersData() => m_gameDataLibrary.CharacterData;
+        public ItemData[] GetItemsData() => m_gameDataLibrary.ItemData;
+        public WeaponData[] GetWeaponsData() => m_gameDataLibrary.WeaponData;
+
+        public WeaponData GetWeaponData(Guid weaponGuid)
+        {
+            return m_gameDataLibrary.WeaponData.FirstOrDefault(weaponData => weaponData.Guid == weaponGuid)
+                   ?? throw new Exception($"Not find weapon with GUID: {weaponGuid} on weapon library");
+        }
 
 
         public async Task<GameObject[]> LoadAssets(string[] assetNames)

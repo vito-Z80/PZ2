@@ -15,7 +15,7 @@ namespace Core
         void Update()
         {
             if (m_target == null) return;
-            m_camera.transform.position = m_target.position + Vector3.back;            
+            m_camera.transform.position = m_target.position + Vector3.back + Vector3.up;            
         }
 
         public void SetTarget(Transform target)

@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Characters;
+using Data;
 using Items;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -28,6 +30,12 @@ namespace Core
             return m_spawnedEnemies.Count < MaxSpawnCount;
         }
 
+        public T SpawnWeapon<T>(Guid weaponGuid, Vector3 position, Transform parent = null)
+        {
+            var data = m_gm.Data.GetWeaponData(weaponGuid);
+            var prefab = m_gm.Data.WeaponPrefabs[data.Name];
+            return Object.Instantiate(prefab, position, Quaternion.identity, parent).GetComponent<T>();
+        }
 
         public T Spawn<T>(GameObject prefab, Vector3 position, Transform parent = null)
         {
@@ -46,8 +54,8 @@ namespace Core
 
         public void SpawnRandomItem(Vector3 position)
         {
-            var rndId = Random.Range(0, m_gm.Data.GetItems().Length);
-            var itemData = m_gm.Data.GetItems()[rndId];
+            var rndId = Random.Range(0, m_gm.Data.GetItemsData().Length);
+            var itemData = m_gm.Data.GetItemsData()[rndId];
             var sprite = m_gm.Data.ItemSprites[itemData.ImageName];
             var item = Spawn<Item>(m_gm.Data.ItemPrefab, position, m_gm.GetLayer("Objects").transform);
             item.Init(itemData);
@@ -68,8 +76,8 @@ namespace Core
             {
                 if (CanSpawn())
                 {
-                    var randomEnemyDataId = Random.Range(0, m_gm.Data.GetEnemies().Length);
-                    var data = m_gm.Data.GetEnemies()[randomEnemyDataId];
+                    var randomEnemyDataId = Random.Range(0, m_gm.Data.GetEnemiesData().Length);
+                    var data = m_gm.Data.GetEnemiesData()[randomEnemyDataId];
                     var prefab = m_gm.Data.EnemyPrefabs[data.Name];
                     var enemy = SpawnInBoundsRandomly<EnemyController>(prefab, bounds, objectsLayer.transform);
                     m_gm.enemies.Add(enemy);
