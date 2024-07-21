@@ -1,0 +1,20 @@
+hero_atlas2.png
+size:128,128
+repeat:none
+pma:true
+Голова 0.png
+bounds:8,41,16,16
+Нога 0.png
+bounds:36,76,5,25
+Нога 0_.png
+bounds:8,8,5,25
+РукаЛокоть 0.png
+bounds:61,87,4,14
+РукаЛокоть 0_.png
+bounds:73,87,4,14
+РукаЛокоть 1.png
+bounds:85,87,4,14
+РукаЛокоть 1_.png
+bounds:49,87,4,14
+Туловище 0.png
+bounds:8,65,20,36

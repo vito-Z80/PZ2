@@ -1,0 +1,102 @@
+{
+  "WeaponData": [
+    {
+      "Attack": 13,
+      "Range": 0.0,
+      "Speed": 2.0,
+      "Durability": 0,
+      "Level": 0,
+      "Guid": "7374e364-caab-458b-aa6b-525108dcd02c",
+      "Name": "AK",
+      "Type": "Machine"
+    }
+  ],
+  "CharacterData": [
+    {
+      "Health": 1000,
+      "Armour": 20,
+      "Speed": 5.0,
+      "Level": 0,
+      "Guid": "75e2dc2b-5e8f-43cd-a638-9fa0baab741c",
+      "Name": "Hero",
+      "Type": "Tank",
+      "WeaponGuid": "7374e364-caab-458b-aa6b-525108dcd02c"
+    }
+  ],
+  "EnemyData": [
+    {
+      "Health": 500,
+      "Armour": 0,
+      "Speed": 2.0,
+      "Level": 0,
+      "Guid": "ab2304e1-06b3-45b6-b3e8-c361edccdee0",
+      "Name": "Zombie",
+      "Type": "Slowly"
+    },
+    {
+      "Health": 200,
+      "Armour": 0,
+      "Speed": 5.0,
+      "Level": 0,
+      "Guid": "e6bdf692-89ba-4737-85f0-89a844a00101",
+      "Name": "Flesh",
+      "Type": "Faster"
+    }
+  ],
+  "ItemData": [
+    {
+      "Guid": "8ecdccc8-3c26-41ab-b6e6-7fd6953326e4",
+      "Name": "AK-74",
+      "Type": "Weapon",
+      "ImageName": "AK-74"
+    },
+    {
+      "Guid": "0e9c0b12-5a74-4dbf-a330-3bd252c81d1c",
+      "Name": "5.45x39",
+      "Type": "Weapon",
+      "ImageName": "5.45x39"
+    },
+    {
+      "Guid": "01c0e2d7-762d-4739-a702-ebb7a5c0844c",
+      "Name": "Makarov",
+      "Type": "Weapon",
+      "ImageName": "Makarov"
+    },
+    {
+      "Guid": "ee0aa628-6eba-410d-b06c-b70026418f79",
+      "Name": "BulletproofCloakElbow",
+      "Type": "Clothes",
+      "ImageName": "BulletproofCloakElbow"
+    },
+    {
+      "Guid": "4eefbc54-0267-4e1b-a31a-b4ddfde3d484",
+      "Name": "BulletproofCloakWrist",
+      "Type": "Clothes",
+      "ImageName": "BulletproofCloakWrist"
+    },
+    {
+      "Guid": "9d749b85-226e-4833-b569-00116b667473",
+      "Name": "MilitaryHelmet",
+      "Type": "Clothes",
+      "ImageName": "MilitaryHelmet"
+    },
+    {
+      "Guid": "fa9dfc9d-007a-42c1-81c6-809c72cb4eaa",
+      "Name": "BulletproofCloak",
+      "Type": "Clothes",
+      "ImageName": "BulletproofCloak"
+    },
+    {
+      "Guid": "aa6b4054-cd76-4790-a666-08d05400d7ed",
+      "Name": "BanditPants",
+      "Type": "Clothes",
+      "ImageName": "BanditPants"
+    },
+    {
+      "Guid": "971d82d4-119d-493f-80b8-38896fa4f2cb",
+      "Name": "SovietBag",
+      "Type": "Clothes",
+      "ImageName": "SovietBag"
+    }
+  ]
+}

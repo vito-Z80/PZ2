@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Sprites
+  m_EditorClassIdentifier: 
+  m_GroupName: Sprites
+  m_Data:
+    m_SerializedData: []
+  m_GUID: bfb80485a907d6646bb453fa4a6b172e
+  m_SerializeEntries:
+  - m_GUID: 6532bc2c52f179142a7333cc0f5faeda
+    m_Address: AK-74
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d45f0cae013abb84688afe6e4bc52845
+    m_Address: 5.45x39
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 1b4696d341b6ec443b4e499361de0675
+    m_Address: Makarov
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 3e85cdf74e325fa40a2c9e688dc51325
+    m_Address: BulletproofCloakElbow
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 0e06a0418c1fb7a4abedb03ea9c66359
+    m_Address: BulletproofCloakWrist
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 1aa8d4e1c6a8e934595f9ab61f2bf8aa
+    m_Address: MilitaryHelmet
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d811afb0d42fed140806f31df436fbda
+    m_Address: BulletproofCloak
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 25c2a3f0b6bbd5e438f53bf9aa8b4c74
+    m_Address: BanditPants
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 93bce68c22ba2ed4592b0338ae2ac8fd
+    m_Address: SovietBag
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: a1c3f20c06031064ba5fff39eddc030d, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 25b49d0f05245b1418ec0119209ba5cf, type: 2}
+    - {fileID: 11400000, guid: 33b59c3497c91c54bbbb7b4671605616, type: 2}
