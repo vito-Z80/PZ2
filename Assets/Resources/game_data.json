@@ -32,7 +32,7 @@
       "Level": 0,
       "Guid": "ab2304e1-06b3-45b6-b3e8-c361edccdee0",
       "Name": "Zombie",
-      "Type": "Slowly"
+      "Type": "Enemy"
     },
     {
       "Health": 200,
@@ -41,12 +41,12 @@
       "Level": 0,
       "Guid": "e6bdf692-89ba-4737-85f0-89a844a00101",
       "Name": "Flesh",
-      "Type": "Faster"
+      "Type": "Enemy"
     }
   ],
   "ItemData": [
     {
-      "Guid": "8ecdccc8-3c26-41ab-b6e6-7fd6953326e4",
+      "Guid": "7374e364-caab-458b-aa6b-525108dcd02c",
       "Name": "AK-74",
       "Type": "Weapon",
       "ImageName": "AK-74"
@@ -54,7 +54,7 @@
     {
       "Guid": "0e9c0b12-5a74-4dbf-a330-3bd252c81d1c",
       "Name": "5.45x39",
-      "Type": "Weapon",
+      "Type": "Ammo",
       "ImageName": "5.45x39"
     },
     {

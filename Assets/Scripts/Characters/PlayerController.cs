@@ -16,7 +16,6 @@ namespace Characters
         [SerializeField] CharacterData data;
         [SerializeField] Gun equippedWeapon;
         [SerializeField] bl_Joystick joystick;
-        List<Guid> m_availableWeapons = new List<Guid>() { new Guid("7374e364-caab-458b-aa6b-525108dcd02c") };
 
 
         public void Init(CharacterData characterData)
@@ -34,11 +33,10 @@ namespace Characters
             };
             m_healthBar = GetComponentInChildren<HealthBar>();
             m_healthBar.SetMaxHealth(data.Health);
-            EquipWeapon(m_availableWeapons[0]);
         }
 
 
-        void EquipWeapon(Guid weaponGuid)
+        public void EquipWeapon(Guid weaponGuid)
         {
             equippedWeapon = GameManager.I.Spawner.SpawnWeapon<Gun>(weaponGuid, m_weaponPoint.position, m_weaponPoint);
             equippedWeapon.Init(GameManager.I.Data.GetWeaponData(weaponGuid));

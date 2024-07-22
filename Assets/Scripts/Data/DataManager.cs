@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Core;
 using Items;
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -17,14 +19,21 @@ namespace Data
     public class DataManager
     {
         string m_jsonPath = "Assets/Resources/game_data.json";
+        string m_savePath;
         GameDataLibrary m_gameDataLibrary;
 
-        public readonly Dictionary<string, GameObject> EnemyPrefabs = new();
-        public readonly Dictionary<string, GameObject> CharacterPrefabs = new();
-        public readonly Dictionary<string, GameObject> WeaponPrefabs = new();
-        public readonly Dictionary<string, Sprite> ItemSprites = new();
+        public readonly Dictionary<Guid, GameObject> EnemyPrefabs = new();
+        public readonly Dictionary<Guid, GameObject> CharacterPrefabs = new();
+        public readonly Dictionary<Guid, GameObject> WeaponPrefabs = new();
+        public readonly Dictionary<Guid, Sprite> ItemSprites = new();
 
         public GameObject ItemPrefab;
+
+        public DataManager()
+        {
+            m_savePath = Application.persistentDataPath + "/save.json";
+            Debug.Log(m_savePath);
+        }
 
 
         // async void Start()
@@ -37,22 +46,28 @@ namespace Data
 
         public async Task Init()
         {
-            m_gameDataLibrary = LoadGameData() ?? throw new NullReferenceException("Failed to load game data.");
+            m_gameDataLibrary = LoadLibraryData() ?? throw new NullReferenceException("Failed to load game data.");
             foreach (var data in m_gameDataLibrary.EnemyData)
-                EnemyPrefabs[data.Name] = await LoadAsset<GameObject>(data.Name);
+                EnemyPrefabs[data.Guid] = await LoadAsset<GameObject>(data.Name);
             foreach (var data in m_gameDataLibrary.CharacterData)
-                CharacterPrefabs[data.Name] = await LoadAsset<GameObject>(data.Name);
+                CharacterPrefabs[data.Guid] = await LoadAsset<GameObject>(data.Name);
             foreach (var data in m_gameDataLibrary.WeaponData)
-                WeaponPrefabs[data.Name] = await LoadAsset<GameObject>(data.Name);
+                WeaponPrefabs[data.Guid] = await LoadAsset<GameObject>(data.Name);
             foreach (var data in m_gameDataLibrary.ItemData)
-                ItemSprites[data.Name] = await LoadAsset<Sprite>(data.ImageName);
+                ItemSprites[data.Guid] = await LoadAsset<Sprite>(data.ImageName);
             //  одиночки
             ItemPrefab = await LoadAsset<GameObject>("Item");
         }
 
         public EnemyData[] GetEnemiesData() => m_gameDataLibrary.EnemyData;
         public CharacterData[] GetCharactersData() => m_gameDataLibrary.CharacterData;
+
+        public CharacterData GetCharacterData(Guid guid) => m_gameDataLibrary.CharacterData.FirstOrDefault(data => data.Guid == guid) ??
+                                                             throw new KeyNotFoundException($"$Character data with Guid {guid} doesn't exist in library.");
+
         public ItemData[] GetItemsData() => m_gameDataLibrary.ItemData;
+        public ItemData GetItemData(Guid guid) => m_gameDataLibrary.ItemData.FirstOrDefault(data => data.Guid == guid) ??
+                                                   throw new KeyNotFoundException($"$Item data with Guid {guid} doesn't exist in library.");
         public WeaponData[] GetWeaponsData() => m_gameDataLibrary.WeaponData;
 
         public WeaponData GetWeaponData(Guid weaponGuid)
@@ -91,11 +106,39 @@ namespace Data
         //     System.IO.File.WriteAllText(m_jsonPath, json);
         // }
 
-        GameDataLibrary LoadGameData()
+        GameDataLibrary LoadLibraryData()
         {
             var json = Resources.Load<TextAsset>("game_data").text;
             var gameData = JsonConvert.DeserializeObject<GameDataLibrary>(json);
             return gameData;
+        }
+
+        [CanBeNull]
+        public SaveData LoadGame()
+        {
+            if (File.Exists(m_savePath))
+            {
+                var json = File.ReadAllText(m_savePath);
+                return JsonConvert.DeserializeObject<SaveData>(json);
+            }
+
+            // remote first time load data
+            return null;
+        }
+
+        public bool SaveGame()
+        {
+            var saveData = GameManager.I.GetSaveData();
+            try
+            {
+                File.WriteAllText(m_savePath, JsonConvert.SerializeObject(saveData));
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return false;
+            }
         }
 
         void OnDestroy()

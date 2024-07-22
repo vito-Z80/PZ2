@@ -18,7 +18,7 @@ namespace Items
         {
             m_spriteRenderer = GetComponentInChildren<SpriteRenderer>();
             data = itemData;
-            m_spriteRenderer.sprite = GameManager.I.Data.ItemSprites[itemData.ImageName];
+            m_spriteRenderer.sprite = GameManager.I.Data.ItemSprites[itemData.Guid];
         }
 
 
@@ -31,7 +31,8 @@ namespace Items
             if (distance < 0.5f)
             {
                 m_target = null;
-                AddItemToInventory();
+                GameManager.I.Inventory.AddItem(data.Guid);
+                GameManager.I.Data.SaveGame();
                 Destroy(gameObject);
             }
         }
@@ -45,11 +46,6 @@ namespace Items
         public ItemData GetData()
         {
             return data;
-        }
-
-        void AddItemToInventory()
-        {
-            //  add to inventory and destroy item
         }
     }
 }

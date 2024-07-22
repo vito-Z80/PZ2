@@ -1,8 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Characters;
 using Data;
+using Items;
+using JetBrains.Annotations;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -13,6 +16,7 @@ namespace Core
 {
     public class GameManager : GlobalSingleton<GameManager>
     {
+        [CanBeNull] SaveData m_saveData;
         public DataManager Data;
         public Spawner Spawner;
         Dictionary<string, Tilemap> m_levelLayers;
@@ -20,6 +24,8 @@ namespace Core
         public List<PlayerController> characters = new(1);
         public List<EnemyController> enemies = new(3);
 
+        public Inventory Inventory = new();
+        
         Button m_fireButton;
         PlayerController m_playerController;
 
@@ -28,16 +34,11 @@ namespace Core
         async void Start()
         {
             await Init();
-
+            await LoadGame();
             //  player spawn
-            var playerId = 0;
-            var playerSpawnPosition = new Vector3(10, 10, 0);
-            var playerData = Data.GetCharactersData()[playerId];
-            var playerPrefab = Data.CharacterPrefabs[playerData.Name];
-            m_playerController = Spawner.Spawn<PlayerController>(playerPrefab, playerSpawnPosition, GetLayer("Objects").transform);
-            m_playerController.Init(playerData);
+            CharactersInstance();
             //  set target for camera
-            m_cameraTracker = Camera.main.GetComponent<CameraTracker>();
+            m_cameraTracker = FindObjectOfType<CameraTracker>();
             m_cameraTracker.SetTarget(m_playerController.transform);
             //  enemy spawns
             StartCoroutine(Spawner.EnemySpawner(m_playerController));
@@ -48,6 +49,22 @@ namespace Core
             Application.targetFrameRate = 60;
         }
 
+        public SaveData GetSaveData() => m_saveData;
+
+        void CharactersInstance()
+        {
+            if (m_saveData is null) throw new Exception("No saveData loaded");
+            var spawnPosition = new Vector3(10, 10, 0);
+            var spawnLayer = GetLayer("Objects").transform;
+            foreach (var guid in m_saveData.Characters)
+            {
+                var prefab = Data.CharacterPrefabs[guid];
+                var data = Data.GetCharacterData(guid);
+                m_playerController = Spawner.Spawn<PlayerController>(prefab, spawnPosition, spawnLayer);
+                m_playerController.Init(data);
+                m_playerController.EquipWeapon(m_saveData.Items[0].Guid); //  TODO get equipped weapon from available
+            }
+        }
 
         async Task Init()
         {
@@ -59,6 +76,28 @@ namespace Core
             await Data.Init();
         }
 
+
+        async Task LoadGame()
+        {
+            m_saveData = Data.LoadGame();
+            if (m_saveData == null)
+            {
+                m_saveData = new SaveData();
+                m_saveData.Characters.Add(new Guid("75e2dc2b-5e8f-43cd-a638-9fa0baab741c"));
+                var itemSaveData = new ItemSaveData
+                {
+                    Guid = new Guid("7374e364-caab-458b-aa6b-525108dcd02c"),
+                    Amount = 1,
+                    IsEquipped = true,
+                    IsSelected = false,
+                };
+                m_saveData.Items.Add(itemSaveData);
+                var saveResult = Data.SaveGame();
+                if (!saveResult) throw new Exception("Failed to save game");
+            }
+
+            await Task.Yield();
+        }
 
         public EnemyController GetNearestEnemy()
         {

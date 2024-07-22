@@ -33,7 +33,7 @@ namespace Core
         public T SpawnWeapon<T>(Guid weaponGuid, Vector3 position, Transform parent = null)
         {
             var data = m_gm.Data.GetWeaponData(weaponGuid);
-            var prefab = m_gm.Data.WeaponPrefabs[data.Name];
+            var prefab = m_gm.Data.WeaponPrefabs[data.Guid];
             return Object.Instantiate(prefab, position, Quaternion.identity, parent).GetComponent<T>();
         }
 
@@ -56,7 +56,7 @@ namespace Core
         {
             var rndId = Random.Range(0, m_gm.Data.GetItemsData().Length);
             var itemData = m_gm.Data.GetItemsData()[rndId];
-            var sprite = m_gm.Data.ItemSprites[itemData.ImageName];
+            var sprite = m_gm.Data.ItemSprites[itemData.Guid];
             var item = Spawn<Item>(m_gm.Data.ItemPrefab, position, m_gm.GetLayer("Objects").transform);
             item.Init(itemData);
         }
@@ -78,7 +78,7 @@ namespace Core
                 {
                     var randomEnemyDataId = Random.Range(0, m_gm.Data.GetEnemiesData().Length);
                     var data = m_gm.Data.GetEnemiesData()[randomEnemyDataId];
-                    var prefab = m_gm.Data.EnemyPrefabs[data.Name];
+                    var prefab = m_gm.Data.EnemyPrefabs[data.Guid];
                     var enemy = SpawnInBoundsRandomly<EnemyController>(prefab, bounds, objectsLayer.transform);
                     m_gm.enemies.Add(enemy);
                     enemy.Init(data);
