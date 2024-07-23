@@ -1,3 +1,4 @@
+using System;
 using Core;
 using Data;
 using UI;
@@ -16,6 +17,9 @@ namespace Characters
 
         GameManager m_gameManager;
 
+        const float DamageTimer = 1.0f; //  TODO move to json for any enemy.
+        float m_damageTime = 0.5f;
+
         public void Init(EnemyData enemyData)
         {
             m_gameManager = GameManager.I;
@@ -27,7 +31,8 @@ namespace Characters
                 Health = enemyData.Health,
                 Armour = enemyData.Armour,
                 Speed = enemyData.Speed,
-                Level = enemyData.Level
+                Level = enemyData.Level,
+                // WeaponGiud = enemyData.WeaponGiud
             };
             m_rigidbody2D = GetComponent<Rigidbody2D>();
             var speedCoefficient = Random.Range(1.0f, 1.2f);
@@ -85,6 +90,21 @@ namespace Characters
         public override void Fire()
         {
             
+        }
+
+
+        void OnTriggerStay2D(Collider2D other)
+        {
+            if (other.CompareTag("Player"))
+            {
+                m_damageTime += Time.deltaTime;
+                if (m_damageTime >= DamageTimer)
+                {
+                    m_damageTime = 0.0f;
+                    //  TODO create BaseDamage parameter in json for enemies and characters/
+                    other.GetComponentInParent<PlayerController>().Damage(37);
+                }
+            }
         }
     }
 }

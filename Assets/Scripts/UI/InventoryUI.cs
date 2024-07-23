@@ -1,79 +1,95 @@
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Core;
 using Data;
-using UI;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class InventoryUI : MonoBehaviour
+namespace UI
 {
-    SaveData m_saveData;
-    GameObject m_itemPrefab;
-    GameManager m_manager;
-    [SerializeField] Transform container;
-    List<ItemIcon> m_items = new();
-
-
-    [SerializeField] Button removeButton;
-    [SerializeField] Button equipButton;
-
-    void OnEnable()
+    public class InventoryUI : MonoBehaviour
     {
-        ShowInventory();
-    }
+        SaveData m_saveData;
+        GameObject m_itemPrefab;
+        GameManager m_manager;
+        [SerializeField] Transform container;
+        List<ItemIcon> m_items = new();
+        [CanBeNull] ItemIcon m_selectedIcon;
 
-    async void ShowInventory()
-    {
-        m_manager ??= GameManager.I;
-        m_saveData ??= m_manager.GetSaveData();
-        m_itemPrefab ??= await m_manager.Data.LoadAsset<GameObject>("ItemIcon");
-        await CreateIcons();
-    }
+        [SerializeField] Button removeButton;
+        [SerializeField] Button equipButton;
 
-    async Task CreateIcons()
-    {
-        //  TODO dont remove child`s, reuse.
-        foreach (Transform child in container)
+        void OnEnable()
         {
-            Destroy(child.gameObject);
+            ShowInventory();
         }
 
-        m_items.Clear();
-
-        foreach (var data in m_saveData.Items)
+        async void ShowInventory()
         {
-            var icon = m_items.Find(icon => icon.GetData().Guid == data.Guid);
-            if (icon)
+            m_manager ??= GameManager.I;
+            m_saveData ??= m_manager.GetSaveData();
+            m_itemPrefab ??= await m_manager.Data.LoadAsset<GameObject>("ItemIcon");
+            removeButton.gameObject.SetActive(false);
+            equipButton.gameObject.SetActive(false);
+            await CreateIcons();
+        }
+
+        public void RemoveItem()
+        {
+            if (m_selectedIcon == null) return;
+            m_saveData.RemoveItem(m_selectedIcon.GetData());
+            var amount = m_selectedIcon.GetData().Amount;
+            m_selectedIcon.SetAmount(amount);
+            if (m_selectedIcon.GetData().Amount <= 0)
             {
-                icon.SetAmount(data.Amount);
+                m_items.Remove(m_selectedIcon);
+                Destroy(m_selectedIcon.gameObject);
             }
-            else
+
+            GameManager.I.Data.SaveGame();
+        }
+
+        public void EquipWeapon()
+        {
+            if (m_selectedIcon == null) return;
+            GameManager.I.GetMasterCharacter().EquipWeapon(m_selectedIcon.GetData().Guid);
+        }
+
+        async Task CreateIcons()
+        {
+            //  TODO dont remove child`s, reuse.
+            foreach (Transform child in container)
+            {
+                Destroy(child.gameObject);
+            }
+
+            m_items.Clear();
+
+            foreach (var data in m_saveData.Items.Values)
             {
                 var iconInstance = Instantiate(m_itemPrefab, container).GetComponent<ItemIcon>();
-                await iconInstance.Init(m_manager.Data.GetItemData(data.Guid));
+                await iconInstance.Init(data);
                 m_items.Add(iconInstance);
             }
         }
-    }
 
 
-    public void SelectItem(Guid guid)
-    {
-        foreach (var itemIcon in m_items)
+        public void SelectItem(ItemIcon icon)
         {
-            if (itemIcon.GetData().Guid == guid)
+            m_selectedIcon = icon;
+            foreach (var itemIcon in m_items)
             {
-                equipButton.gameObject.SetActive(itemIcon.GetData().Type == "Weapon");
-                removeButton.gameObject.SetActive(itemIcon.GetData().Type != "Weapon");
-            }
-            else
-            {
-                itemIcon.ResetSelection();
+                if (itemIcon == icon)
+                {
+                    equipButton.gameObject.SetActive(itemIcon.GetData().Type == "Weapon");
+                    removeButton.gameObject.SetActive(true);
+                }
+                else
+                {
+                    itemIcon.ResetSelection();
+                }
             }
         }
     }
-
-    
 }

@@ -2,6 +2,7 @@ using Core;
 using Data;
 using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Items
 {
@@ -10,7 +11,6 @@ namespace Items
         [SerializeField] float flySpeed;
         [SerializeField] ItemData data;
         SpriteRenderer m_spriteRenderer;
-
         [CanBeNull] Transform m_target = null;
 
 
@@ -31,8 +31,8 @@ namespace Items
             if (distance < 0.5f)
             {
                 m_target = null;
-                GameManager.I.Inventory.AddItem(data.Guid);
-                GameManager.I.Data.SaveGame();
+                GameManager.I.GetSaveData().AddItem(data);
+                GameManager.I.Data.SaveGame(); //  save every item gets
                 Destroy(gameObject);
             }
         }

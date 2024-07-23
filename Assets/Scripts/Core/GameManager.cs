@@ -4,18 +4,21 @@ using System.Linq;
 using System.Threading.Tasks;
 using Characters;
 using Data;
-using Items;
 using JetBrains.Annotations;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Tilemaps;
-using Button = UnityEngine.UI.Button;
 using Utils;
+using Button = UnityEngine.UI.Button;
 
 namespace Core
 {
     public class GameManager : GlobalSingleton<GameManager>
     {
+        readonly Guid m_baseCharacterGuid = new Guid("75e2dc2b-5e8f-43cd-a638-9fa0baab741c");
+        readonly Guid m_baseAmmoGuid = new Guid("0e9c0b12-5a74-4dbf-a330-3bd252c81d1c");
+
         [CanBeNull] SaveData m_saveData;
         public DataManager Data;
         public Spawner Spawner;
@@ -24,12 +27,12 @@ namespace Core
         public List<PlayerController> characters = new(1);
         public List<EnemyController> enemies = new(3);
 
-        public Inventory Inventory = new();
-        
         Button m_fireButton;
         PlayerController m_playerController;
 
         CameraTracker m_cameraTracker;
+
+        public SaveData GetSaveData() => m_saveData;
 
         async void Start()
         {
@@ -42,14 +45,21 @@ namespace Core
             m_cameraTracker.SetTarget(m_playerController.transform);
             //  enemy spawns
             StartCoroutine(Spawner.EnemySpawner(m_playerController));
-
-            m_fireButton = GameObject.Find("FireButton").GetComponent<Button>();
-            m_fireButton.onClick.AddListener(m_playerController.Fire);
+            FireButton();
             QualitySettings.vSyncCount = 0;
             Application.targetFrameRate = 60;
         }
 
-        public SaveData GetSaveData() => m_saveData;
+        void FireButton()
+        {
+            m_fireButton = GameObject.Find("FireButton").GetComponent<Button>();
+            var eventTrigger = m_fireButton.gameObject.AddComponent<EventTrigger>();
+            var entry = new EventTrigger.Entry();
+            entry.eventID = EventTriggerType.PointerDown;
+            entry.callback.AddListener((_) => { m_playerController.Fire(); });
+            eventTrigger.triggers.Add(entry);
+        }
+
 
         void CharactersInstance()
         {
@@ -58,19 +68,22 @@ namespace Core
             var spawnLayer = GetLayer("Objects").transform;
             foreach (var guid in m_saveData.Characters)
             {
-                var prefab = Data.CharacterPrefabs[guid];
-                var data = Data.GetCharacterData(guid);
+                var prefab = Data.CharacterPrefabs[guid.Key];
+                var characterData = Data.GetCharacterData(guid.Key);
                 m_playerController = Spawner.Spawn<PlayerController>(prefab, spawnPosition, spawnLayer);
-                m_playerController.Init(data);
-                m_playerController.EquipWeapon(m_saveData.Items[0].Guid); //  TODO get equipped weapon from available
+                m_playerController.Init(characterData);
+                Debug.Log(characterData.EquippedWeaponGiud);
+                m_playerController.EquipWeapon(characterData.EquippedWeaponGiud); //  TODO get equipped weapon from available
             }
         }
 
+
+        public PlayerController GetMasterCharacter() => m_playerController;
+        
         async Task Init()
         {
             PlatformPermission.CheckPermissions();
             m_levelLayers = FindObjectOfType<Grid>().GetComponentsInChildren<Tilemap>().ToDictionary(tMap => tMap.name, tMap => tMap);
-            Debug.Log(m_levelLayers.Count);
             Data = new DataManager();
             Spawner = new Spawner(this);
             await Data.Init();
@@ -83,15 +96,30 @@ namespace Core
             if (m_saveData == null)
             {
                 m_saveData = new SaveData();
-                m_saveData.Characters.Add(new Guid("75e2dc2b-5e8f-43cd-a638-9fa0baab741c"));
-                var itemSaveData = new ItemSaveData
-                {
-                    Guid = new Guid("7374e364-caab-458b-aa6b-525108dcd02c"),
-                    Amount = 1,
-                    IsEquipped = true,
-                    IsSelected = false,
-                };
-                m_saveData.Items.Add(itemSaveData);
+                var baseCharacterData = Data.GetCharacterData(m_baseCharacterGuid);
+                var baseAmmoData = Data.GetItemData(m_baseAmmoGuid);
+                m_saveData.AddCharacter(baseCharacterData);
+                //  TODO при запуске игры у перса автомат, даже если его нет и был выбран пестик в предыдущей сессии.
+                //  TODO данные игрока не сохраняются. Напутано с данными... 
+                // m_saveData.AddWeapon(baseWeaponData);
+                m_saveData.AddItem(Data.GetItemData(baseCharacterData.EquippedWeaponGiud));
+                m_saveData.AddItem(baseAmmoData);
+
+                // var characterData = new CharacterData
+                // {
+                //     Guid = baseCharacterData.Guid,
+                //     Name = baseCharacterData.Name,
+                //     Type = baseCharacterData.Type,
+                //     Health = baseCharacterData.Health,
+                //     Armour = baseCharacterData.Armour,
+                //     Speed = baseCharacterData.Speed,
+                //     Level = baseCharacterData.Level,
+                //     EquippedWeaponGiud = baseCharacterData.EquippedWeaponGiud
+                // };
+                // m_saveData.Characters[m_baseCharacterGuid] = characterData;
+                // m_saveData.Weapons[characterData.EquippedWeaponGiud] = Data.GetWeaponData(characterData.EquippedWeaponGiud);
+                // m_saveData.Items[characterData.EquippedWeaponGiud] = Data.GetItemData(characterData.EquippedWeaponGiud);
+                // m_saveData.Items[m_baseAmmoGuid] = Data.GetItemData(m_baseAmmoGuid);
                 var saveResult = Data.SaveGame();
                 if (!saveResult) throw new Exception("Failed to save game");
             }
@@ -99,6 +127,7 @@ namespace Core
             await Task.Yield();
         }
 
+        [CanBeNull]
         public EnemyController GetNearestEnemy()
         {
             var distance = m_playerController.GetWeaponRadius();

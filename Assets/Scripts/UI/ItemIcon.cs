@@ -18,16 +18,13 @@ namespace UI
         [SerializeField] Image itemIcon;
         [SerializeField] ItemData data;
 
-        
-        public bool isSelected = false;
-        
         public async Task Init(ItemData itemData)
         {
+            data = itemData;
             var manager = GameManager.I;
             var sprite = await manager.Data.LoadAsset<Sprite>(itemData.ImageName);
             itemIcon.sprite = sprite;
-            var amount = manager.GetSaveData().Items.FirstOrDefault(saveData => saveData.Guid == itemData.Guid)?.Amount
-                         ?? throw new NullReferenceException("Item not have amount");
+            var amount = manager.GetSaveData().Items[itemData.Guid].Amount;
             SetAmount(amount);
         }
 
@@ -44,18 +41,14 @@ namespace UI
 
         public void ResetSelection()
         {
-            isSelected = false;
             selector.gameObject.SetActive(false);
         }
-        
+
         public void SetSelection()
         {
-            isSelected = true;
             selector.gameObject.SetActive(true);
-            // GameManager.I.Inventory.SelectItem(data.Guid);
             var inventory = GetComponentInParent<InventoryUI>();
-            inventory.SelectItem(data.Guid);
-           
+            inventory.SelectItem(this);
         }
     }
 }

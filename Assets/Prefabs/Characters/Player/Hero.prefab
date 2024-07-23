@@ -304,6 +304,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cf106e2e15d4ca39d9b49bf81b7f1dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &6045292066377328163
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4642125230132290248}
+  m_Layer: 0
+  m_Name: WeaponPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4642125230132290248
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6045292066377328163}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.63, y: -0.066, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3881956127566602449}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6260198605704659214
 GameObject:
   m_ObjectHideFlags: 0
@@ -315,9 +346,9 @@ GameObject:
   - component: {fileID: 6260198605704659201}
   - component: {fileID: 6260198605704659202}
   - component: {fileID: 6260198605704659203}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Hero
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -375,7 +406,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: {x: 0, y: 0}
-  m_weaponPoint: {fileID: 3881956127566602449}
+  m_weaponPoint: {fileID: 4642125230132290248}
   m_weaponRadiusSprite: {fileID: 3342273909371816985}
   data:
     Name: 
@@ -384,6 +415,7 @@ MonoBehaviour:
     Armour: 0
     Speed: 0
     Level: 0
+    IsMaster: 0
   equippedWeapon: {fileID: 0}
   joystick: {fileID: 0}
 --- !u!1001 &6260198605137414056
@@ -455,6 +487,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5842073073264003490}
     m_Modifications:
+    - target: {fileID: 518030859649700683, guid: 1440f0b18e523a841841e57d6bfa680e, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 518030859649700683, guid: 1440f0b18e523a841841e57d6bfa680e, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 586588276140604116, guid: 1440f0b18e523a841841e57d6bfa680e, type: 3}
       propertyPath: m_Bounds.m_Center.x
       value: -0.0075847805

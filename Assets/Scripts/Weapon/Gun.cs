@@ -91,6 +91,8 @@ namespace Weapon
         }
 
 
+        public WeaponData GetData() => data;
+
         // void OnEnable()
         // {
         //     m_fireButton = GameObject.Find("FireButton").GetComponent<Button>();

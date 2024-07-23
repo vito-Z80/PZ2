@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Generic;
+using System.Linq;
 using Core;
 using Data;
 using UI;
@@ -17,20 +17,12 @@ namespace Characters
         [SerializeField] Gun equippedWeapon;
         [SerializeField] bl_Joystick joystick;
 
+        ItemData m_itemDataAmmo;
 
         public void Init(CharacterData characterData)
         {
             joystick = FindObjectOfType<bl_Joystick>();
-            data = new CharacterData
-            {
-                Guid = characterData.Guid,
-                Name = characterData.Name,
-                Type = characterData.Type,
-                Health = characterData.Health,
-                Armour = characterData.Armour,
-                Speed = characterData.Speed,
-                Level = characterData.Level
-            };
+            data = characterData;
             m_healthBar = GetComponentInChildren<HealthBar>();
             m_healthBar.SetMaxHealth(data.Health);
         }
@@ -38,10 +30,20 @@ namespace Characters
 
         public void EquipWeapon(Guid weaponGuid)
         {
-            equippedWeapon = GameManager.I.Spawner.SpawnWeapon<Gun>(weaponGuid, m_weaponPoint.position, m_weaponPoint);
-            equippedWeapon.Init(GameManager.I.Data.GetWeaponData(weaponGuid));
-            var weaponRadiusSprite = equippedWeapon.GetDamageRadius() - 1;
-            m_weaponRadiusSprite.localScale = new Vector3(weaponRadiusSprite, weaponRadiusSprite, weaponRadiusSprite);
+            if (equippedWeapon != null)
+            {
+                if (equippedWeapon.GetData().Guid == weaponGuid) return;
+                DestroyImmediate(equippedWeapon.gameObject);
+            }
+
+            if (equippedWeapon == null)
+            {
+                data.EquippedWeaponGiud = weaponGuid;
+                equippedWeapon = GameManager.I.Spawner.SpawnWeapon<Gun>(weaponGuid, m_weaponPoint.position, m_weaponPoint);
+                equippedWeapon.Init(GameManager.I.Data.GetWeaponData(weaponGuid));
+                var weaponRadiusSprite = equippedWeapon.GetDamageRadius() - 1;
+                m_weaponRadiusSprite.localScale = new Vector3(weaponRadiusSprite, weaponRadiusSprite, weaponRadiusSprite);
+            }
         }
 
         void Update()
@@ -84,9 +86,29 @@ namespace Characters
 
         public override void Fire()
         {
+            if (m_itemDataAmmo == null)
+            {
+                m_itemDataAmmo = GameManager.I.GetSaveData().Items.FirstOrDefault(pair => pair.Value.Type == "Ammo").Value; // shit
+                if (m_itemDataAmmo == null)
+                {
+                    Debug.Log("No ammo.");
+                    return;
+                }
+            }
+
+
             if (equippedWeapon)
             {
+                if (m_itemDataAmmo.Amount < 0)
+                {
+                    Debug.Log("No ammo");
+                    GameManager.I.GetSaveData().RemoveItem(m_itemDataAmmo);
+                    return;
+                }
+
                 var target = GameManager.I.GetNearestEnemy();
+                if (target == null) return;
+                m_itemDataAmmo.Amount--;
                 equippedWeapon.Fire(target, 1.0f);
             }
         }

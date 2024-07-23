@@ -9,6 +9,7 @@ namespace Data
         public int Armour;
         public float Speed;
         public int Level;
-        public Guid WeaponGiud;
+        public Guid EquippedWeaponGiud;
+        public bool IsMaster;
     }
 }

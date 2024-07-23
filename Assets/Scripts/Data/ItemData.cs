@@ -6,5 +6,6 @@ namespace Data
     public class ItemData : MainGameData
     {
         public string ImageName;
+        public int Amount;
     }
 }

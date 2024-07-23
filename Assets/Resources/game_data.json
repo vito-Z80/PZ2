@@ -8,8 +8,21 @@
       "Level": 0,
       "Guid": "7374e364-caab-458b-aa6b-525108dcd02c",
       "Name": "AK",
-      "Type": "Machine",
-      "Radius": 5.0
+      "Type": "Weapon",
+      "Radius": 5.0,
+      "Amount": 1
+    },
+    {
+      "Attack": 31,
+      "Range": 0.0,
+      "Speed": 5.0,
+      "Durability": 1000,
+      "Level": 0,
+      "Guid": "01c0e2d7-762d-4739-a702-ebb7a5c0844c",
+      "Name": "Makarov",
+      "Type": "Weapon",
+      "Radius": 6.0,
+      "Amount": 1
     }
   ],
   "CharacterData": [
@@ -21,7 +34,8 @@
       "Guid": "75e2dc2b-5e8f-43cd-a638-9fa0baab741c",
       "Name": "Hero",
       "Type": "Tank",
-      "WeaponGuid": "7374e364-caab-458b-aa6b-525108dcd02c"
+      "EquippedWeaponGiud": "7374e364-caab-458b-aa6b-525108dcd02c",
+      "IsMaster": true
     }
   ],
   "EnemyData": [
@@ -49,55 +63,64 @@
       "Guid": "7374e364-caab-458b-aa6b-525108dcd02c",
       "Name": "AK-74",
       "Type": "Weapon",
-      "ImageName": "AK-74"
+      "ImageName": "AK-74",
+      "Amount": 1
     },
     {
       "Guid": "0e9c0b12-5a74-4dbf-a330-3bd252c81d1c",
       "Name": "5.45x39",
       "Type": "Ammo",
-      "ImageName": "5.45x39"
+      "ImageName": "5.45x39",
+      "Amount": 150
     },
     {
       "Guid": "01c0e2d7-762d-4739-a702-ebb7a5c0844c",
       "Name": "Makarov",
       "Type": "Weapon",
-      "ImageName": "Makarov"
+      "ImageName": "Makarov",
+      "Amount": 1
     },
     {
       "Guid": "ee0aa628-6eba-410d-b06c-b70026418f79",
       "Name": "BulletproofCloakElbow",
       "Type": "Clothes",
-      "ImageName": "BulletproofCloakElbow"
+      "ImageName": "BulletproofCloakElbow",
+      "Amount": 1
     },
     {
       "Guid": "4eefbc54-0267-4e1b-a31a-b4ddfde3d484",
       "Name": "BulletproofCloakWrist",
       "Type": "Clothes",
-      "ImageName": "BulletproofCloakWrist"
+      "ImageName": "BulletproofCloakWrist",
+      "Amount": 1
     },
     {
       "Guid": "9d749b85-226e-4833-b569-00116b667473",
       "Name": "MilitaryHelmet",
       "Type": "Clothes",
-      "ImageName": "MilitaryHelmet"
+      "ImageName": "MilitaryHelmet",
+      "Amount": 1
     },
     {
       "Guid": "fa9dfc9d-007a-42c1-81c6-809c72cb4eaa",
       "Name": "BulletproofCloak",
       "Type": "Clothes",
-      "ImageName": "BulletproofCloak"
+      "ImageName": "BulletproofCloak",
+      "Amount": 1
     },
     {
       "Guid": "aa6b4054-cd76-4790-a666-08d05400d7ed",
       "Name": "BanditPants",
       "Type": "Clothes",
-      "ImageName": "BanditPants"
+      "ImageName": "BanditPants",
+      "Amount": 1
     },
     {
       "Guid": "971d82d4-119d-493f-80b8-38896fa4f2cb",
       "Name": "SovietBag",
       "Type": "Clothes",
-      "ImageName": "SovietBag"
+      "ImageName": "SovietBag",
+      "Amount": 1
     }
   ]
 }

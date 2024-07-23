@@ -11,5 +11,6 @@ namespace Data
         public float Speed;
         public int Durability;
         public int Level;
+        public int Amount;
     }
 }

@@ -56,7 +56,6 @@ namespace Core
         {
             var rndId = Random.Range(0, m_gm.Data.GetItemsData().Length);
             var itemData = m_gm.Data.GetItemsData()[rndId];
-            var sprite = m_gm.Data.ItemSprites[itemData.Guid];
             var item = Spawn<Item>(m_gm.Data.ItemPrefab, position, m_gm.GetLayer("Objects").transform);
             item.Init(itemData);
         }

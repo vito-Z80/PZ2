@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 3356575749328454958}
   - component: {fileID: 3543393457730460773}
   - component: {fileID: 8283398191421481217}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Zombie
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -80,6 +80,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d380b0363bc793f4facf98ec89567671, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  direction: {x: 0, y: 0}
   flippedTransform: {fileID: 7554145664428884671}
   data:
     Name: 
@@ -88,6 +89,7 @@ MonoBehaviour:
     Armour: 0
     Speed: 0
     Level: 0
+    IsMaster: 0
 --- !u!1001 &7050982901702943200
 PrefabInstance:
   m_ObjectHideFlags: 0

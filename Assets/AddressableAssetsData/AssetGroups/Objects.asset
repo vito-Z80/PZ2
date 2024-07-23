@@ -45,6 +45,10 @@ MonoBehaviour:
     m_Address: Item
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 00f5b5961d0b8684898ab3a28689c80b
+    m_Address: Makarov
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: a1c3f20c06031064ba5fff39eddc030d, type: 2}
   m_SchemaSet:
