@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Core;
-using Items;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 using UnityEngine;
@@ -18,8 +18,7 @@ namespace Data
 {
     public class DataManager
     {
-        string m_jsonPath = "Assets/Resources/game_data.json";
-        string m_savePath;
+        readonly string m_savePath = Application.persistentDataPath + "/save.json";
         GameDataLibrary m_gameDataLibrary;
 
         public readonly Dictionary<Guid, GameObject> EnemyPrefabs = new();
@@ -28,12 +27,6 @@ namespace Data
         public readonly Dictionary<Guid, Sprite> ItemSprites = new();
 
         public GameObject ItemPrefab;
-
-        public DataManager()
-        {
-            m_savePath = Application.persistentDataPath + "/save.json";
-            Debug.Log(m_savePath);
-        }
 
 
         // async void Start()
@@ -47,27 +40,53 @@ namespace Data
         public async Task Init()
         {
             m_gameDataLibrary = LoadLibraryData() ?? throw new NullReferenceException("Failed to load game data.");
+            
             foreach (var data in m_gameDataLibrary.EnemyData)
-                EnemyPrefabs[data.Guid] = await LoadAsset<GameObject>(data.Name);
+            {
+                if (!EnemyPrefabs.ContainsKey(data.Guid))
+                    EnemyPrefabs[data.Guid] = await LoadAsset<GameObject>(data.Name);
+            }
+
             foreach (var data in m_gameDataLibrary.CharacterData)
-                CharacterPrefabs[data.Guid] = await LoadAsset<GameObject>(data.Name);
+            {
+                if (!CharacterPrefabs.ContainsKey(data.Guid))
+                    CharacterPrefabs[data.Guid] = await LoadAsset<GameObject>(data.Name);
+            }
+
             foreach (var data in m_gameDataLibrary.WeaponData)
-                WeaponPrefabs[data.Guid] = await LoadAsset<GameObject>(data.Name);
+            {
+                if (!WeaponPrefabs.ContainsKey(data.Guid))
+                    WeaponPrefabs[data.Guid] = await LoadAsset<GameObject>(data.Name);
+            }
+
             foreach (var data in m_gameDataLibrary.ItemData)
-                ItemSprites[data.Guid] = await LoadAsset<Sprite>(data.ImageName);
+            {
+                if (!ItemSprites.ContainsKey(data.Guid))
+                    ItemSprites[data.Guid] = await LoadAsset<Sprite>(data.ImageName);
+            }
+
             //  одиночки
-            ItemPrefab = await LoadAsset<GameObject>("Item");
+            ItemPrefab ??= await LoadAsset<GameObject>("Item");
         }
 
+
+        public Sprite GetItemSprite(Guid guid) => ItemSprites[guid] ?? throw new KeyNotFoundException($"Item sprite with Guid: {guid} was not found.");
+
         public EnemyData[] GetEnemiesData() => m_gameDataLibrary.EnemyData;
+
+        public EnemyData GetEnemyData(Guid guid) => m_gameDataLibrary.EnemyData.FirstOrDefault(data => data.Guid == guid) ??
+                                                    throw new KeyNotFoundException($"Enemy data with Guid {guid} doesn't exist in library.");
+
         public CharacterData[] GetCharactersData() => m_gameDataLibrary.CharacterData;
 
         public CharacterData GetCharacterData(Guid guid) => m_gameDataLibrary.CharacterData.FirstOrDefault(data => data.Guid == guid) ??
-                                                             throw new KeyNotFoundException($"$Character data with Guid {guid} doesn't exist in library.");
+                                                            throw new KeyNotFoundException($"Character data with Guid {guid} doesn't exist in library.");
 
         public ItemData[] GetItemsData() => m_gameDataLibrary.ItemData;
+
         public ItemData GetItemData(Guid guid) => m_gameDataLibrary.ItemData.FirstOrDefault(data => data.Guid == guid) ??
-                                                   throw new KeyNotFoundException($"$Item data with Guid {guid} doesn't exist in library.");
+                                                  throw new KeyNotFoundException($"Item data with Guid {guid} doesn't exist in library.");
+
         public WeaponData[] GetWeaponsData() => m_gameDataLibrary.WeaponData;
 
         public WeaponData GetWeaponData(Guid weaponGuid)
@@ -108,7 +127,8 @@ namespace Data
 
         GameDataLibrary LoadLibraryData()
         {
-            var json = Resources.Load<TextAsset>("game_data").text;
+            if (m_gameDataLibrary != null) return m_gameDataLibrary;
+            var json = Resources.Load<TextAsset>("game_data").text; //  from server
             var gameData = JsonConvert.DeserializeObject<GameDataLibrary>(json);
             return gameData;
         }
@@ -131,7 +151,7 @@ namespace Data
             var saveData = GameManager.I.GetSaveData();
             try
             {
-                File.WriteAllText(m_savePath, JsonConvert.SerializeObject(saveData));
+                File.WriteAllText(m_savePath, JsonConvert.SerializeObject(saveData, Formatting.Indented));
                 return true;
             }
             catch (Exception e)
@@ -139,10 +159,6 @@ namespace Data
                 Console.WriteLine(e);
                 return false;
             }
-        }
-
-        void OnDestroy()
-        {
         }
     }
 }

@@ -9,9 +9,15 @@ using UnityEngine;
 
 public class Launcher : MonoBehaviour
 {
+
+    [SerializeField] int maxSpawnEnemies;
+    [SerializeField] int killEnemiesForWin;
+    
     void OnEnable()
     {
-        var a = GameManager.I;
+        var gm = GameManager.I;
+        gm.maxSpawnEnemies = maxSpawnEnemies;
+        gm.killEnemiesForWin = killEnemiesForWin;
         Destroy(gameObject);
     }
 }

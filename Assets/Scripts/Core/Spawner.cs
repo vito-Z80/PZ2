@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using Characters;
-using Data;
 using Items;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -13,21 +11,12 @@ namespace Core
 {
     public class Spawner
     {
-        int m_maxEnemiesToWin = 20;
-        const int MaxSpawnCount = 3;
-        readonly List<EnemyController> m_spawnedEnemies;
-        GameManager m_gm;
+        public static event Action<int> OnEnemyDead;
+        readonly GameManager m_gm;
 
         public Spawner(GameManager gameManager)
         {
             m_gm = gameManager;
-            m_spawnedEnemies = m_gm.enemies;
-        }
-
-        public bool CanSpawn()
-        {
-            m_spawnedEnemies.RemoveAll(o => o.IsDestroyed());
-            return m_spawnedEnemies.Count < MaxSpawnCount;
         }
 
         public T SpawnWeapon<T>(Guid weaponGuid, Vector3 position, Transform parent = null)
@@ -60,32 +49,46 @@ namespace Core
             item.Init(itemData);
         }
 
-
-        public IEnumerator EnemySpawner(PlayerController playerController)
+        public IEnumerator EnemySpawner(Transform target)
         {
+            m_gm.enemies.Clear();
             var floor = m_gm.GetLayer("Floor");
             var objectsLayer = m_gm.GetLayer("Objects");
-            m_gm.characters.Add(playerController);
             var bounds = floor.cellBounds;
             var offset = Mathf.CeilToInt(floor.GetComponent<CompositeCollider2D>().edgeRadius);
             bounds.xMin += offset;
             bounds.yMin += offset;
             bounds.size = new Vector3Int(bounds.size.x - offset / 2, bounds.size.y - offset / 2, bounds.size.z);
-            while (m_maxEnemiesToWin > 0)
+            var killEnemiesForWin = m_gm.killEnemiesForWin;
+            while (killEnemiesForWin > 0)
             {
-                if (CanSpawn())
+                if (CanSpawn(m_gm.maxSpawnEnemies, ref killEnemiesForWin))
                 {
                     var randomEnemyDataId = Random.Range(0, m_gm.Data.GetEnemiesData().Length);
                     var data = m_gm.Data.GetEnemiesData()[randomEnemyDataId];
                     var prefab = m_gm.Data.EnemyPrefabs[data.Guid];
                     var enemy = SpawnInBoundsRandomly<EnemyController>(prefab, bounds, objectsLayer.transform);
                     m_gm.enemies.Add(enemy);
-                    enemy.Init(data);
-                    m_maxEnemiesToWin--;
+                    enemy.Init(data, target.transform);
                 }
 
                 yield return new WaitForSeconds(0.3f);
             }
+
+            yield return new WaitForSeconds(2.0f);
+            m_gm.Win();
+        }
+
+        bool CanSpawn(int maxSpawnEnemies, ref int killEnemiesForWin)
+        {
+            killEnemiesForWin -= m_gm.enemies.RemoveAll(o => o.IsDestroyed());
+            UpdateEnemiesLeft(killEnemiesForWin);
+            return m_gm.enemies.Count < maxSpawnEnemies;
+        }
+
+        static void UpdateEnemiesLeft(int count)
+        {
+            OnEnemyDead?.Invoke(count);
         }
     }
 }

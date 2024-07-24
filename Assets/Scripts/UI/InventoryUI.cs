@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Core;
@@ -12,7 +13,7 @@ namespace UI
     {
         SaveData m_saveData;
         GameObject m_itemPrefab;
-        GameManager m_manager;
+        GameManager m_gm;
         [SerializeField] Transform container;
         List<ItemIcon> m_items = new();
         [CanBeNull] ItemIcon m_selectedIcon;
@@ -25,13 +26,18 @@ namespace UI
             ShowInventory();
         }
 
+        void OnDisable()
+        {
+            Clear();
+        }
+
         async void ShowInventory()
         {
-            m_manager ??= GameManager.I;
-            m_saveData ??= m_manager.GetSaveData();
-            m_itemPrefab ??= await m_manager.Data.LoadAsset<GameObject>("ItemIcon");
             removeButton.gameObject.SetActive(false);
             equipButton.gameObject.SetActive(false);
+            m_gm ??= GameManager.I;
+            m_itemPrefab ??= await m_gm.Data.LoadAsset<GameObject>("ItemIcon");
+            m_saveData = m_gm.GetSaveData();
             await CreateIcons();
         }
 
@@ -47,7 +53,7 @@ namespace UI
                 Destroy(m_selectedIcon.gameObject);
             }
 
-            GameManager.I.Data.SaveGame();
+            // GameManager.I.Data.SaveGame();
         }
 
         public void EquipWeapon()
@@ -56,22 +62,29 @@ namespace UI
             GameManager.I.GetMasterCharacter().EquipWeapon(m_selectedIcon.GetData().Guid);
         }
 
-        async Task CreateIcons()
+
+        void Clear()
         {
-            //  TODO dont remove child`s, reuse.
             foreach (Transform child in container)
             {
                 Destroy(child.gameObject);
             }
 
             m_items.Clear();
-
+        }
+        
+        Task CreateIcons()
+        {
+            //  TODO dont remove child`s, reuse.
+            Clear();
             foreach (var data in m_saveData.Items.Values)
             {
                 var iconInstance = Instantiate(m_itemPrefab, container).GetComponent<ItemIcon>();
-                await iconInstance.Init(data);
+                iconInstance.Init(data);
                 m_items.Add(iconInstance);
             }
+
+            return Task.CompletedTask;
         }
 
 

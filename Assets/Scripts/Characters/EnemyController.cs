@@ -14,15 +14,14 @@ namespace Characters
         HealthBar m_healthBar;
         [SerializeField] Transform flippedTransform;
         [SerializeField] EnemyData data;
-
-        GameManager m_gameManager;
+        Transform m_target;
 
         const float DamageTimer = 1.0f; //  TODO move to json for any enemy.
         float m_damageTime = 0.5f;
 
-        public void Init(EnemyData enemyData)
+        public void Init(EnemyData enemyData, Transform playerControllerTransform)
         {
-            m_gameManager = GameManager.I;
+            m_target = playerControllerTransform;
             data = new EnemyData
             {
                 Guid = enemyData.Guid,
@@ -31,20 +30,28 @@ namespace Characters
                 Health = enemyData.Health,
                 Armour = enemyData.Armour,
                 Speed = enemyData.Speed,
-                Level = enemyData.Level,
-                // WeaponGiud = enemyData.WeaponGiud
+                Level = enemyData.Level
             };
             m_rigidbody2D = GetComponent<Rigidbody2D>();
             var speedCoefficient = Random.Range(1.0f, 1.2f);
             data.Speed *= speedCoefficient;
             m_healthBar = GetComponentInChildren<HealthBar>();
-            m_healthBar.SetMaxHealth(data.Health);
+            var baseEnemyData = GameManager.I.Data.GetEnemyData(enemyData.Guid);
+            m_healthBar.Init(baseEnemyData.Health, data.Health);
         }
 
         void Update()
         {
             if (data == null) return;
-            m_direction = (m_gameManager.characters[0].transform.position - transform.position).normalized;
+            if (m_target != null)
+            {
+                m_direction = (m_target.position - transform.position).normalized;
+            }
+            else
+            {
+                m_direction = Vector2.zero;
+            }
+
             Flip();
         }
 
@@ -61,7 +68,7 @@ namespace Characters
             {
                 localScale.x = 1.0f;
             }
-            else
+            else if (m_direction.x < 0.0f)
             {
                 localScale.x = -1.0f;
             }
@@ -73,7 +80,7 @@ namespace Characters
         public override void Damage(int value)
         {
             data.Health -= value;
-            m_healthBar.UpdateHealth(-value);
+            m_healthBar.UpdateHealth(data.Health);
             if (data.Health <= 0)
             {
                 data.Health = 0;
@@ -84,12 +91,10 @@ namespace Characters
 
         public override void AddHealth(int health)
         {
-            
         }
 
         public override void Fire()
         {
-            
         }
 
 

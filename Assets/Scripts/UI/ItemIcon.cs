@@ -17,13 +17,12 @@ namespace UI
         [SerializeField] Image selector;
         [SerializeField] Image itemIcon;
         [SerializeField] ItemData data;
-
-        public async Task Init(ItemData itemData)
+        
+        public void Init(ItemData itemData)
         {
             data = itemData;
             var manager = GameManager.I;
-            var sprite = await manager.Data.LoadAsset<Sprite>(itemData.ImageName);
-            itemIcon.sprite = sprite;
+            itemIcon.sprite = manager.Data.GetItemSprite(data.Guid);
             var amount = manager.GetSaveData().Items[itemData.Guid].Amount;
             SetAmount(amount);
         }

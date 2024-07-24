@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 5470208411996360296}
   - component: {fileID: 5470208411996360299}
   - component: {fileID: 5470208411996360297}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Item
   m_TagString: Item
   m_Icon: {fileID: 0}
@@ -146,8 +146,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4129c016c143ec4c98ea86d183349b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flySpeed: 6
+  flySpeed: 12
   data:
     Name: 
     Type: 
     ImageName: 
+    Amount: 0

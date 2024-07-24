@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3311896245043477795}
   - component: {fileID: 124778536511102618}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Flag_196
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4372186112622888944}
   - component: {fileID: 6276133140322200334}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Flag_195
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -178,7 +178,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7359414858265603585}
   - component: {fileID: 3580278488329350465}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Flag_197
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -262,7 +262,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4390433755155829960}
   - component: {fileID: 7758142264662757463}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Cillider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -312,7 +312,7 @@ GameObject:
   - component: {fileID: 198878907073786030}
   - component: {fileID: 2632113681708427613}
   - component: {fileID: 2295487616558288430}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: LeftEnter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -423,7 +423,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9079388944480850832}
   - component: {fileID: 1889267245019447672}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: c6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -507,7 +507,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1798028733664978816}
   - component: {fileID: 8218680901544920917}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: c2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -591,7 +591,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7492994881625649512}
   - component: {fileID: 1750985880569013961}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: c8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -675,7 +675,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1368161064301926670}
   - component: {fileID: 5243568272989441704}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Flag_180
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -759,7 +759,7 @@ GameObject:
   m_Component:
   - component: {fileID: 771276998645053711}
   - component: {fileID: 1024906395955084161}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: c3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -843,7 +843,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5089128023180279177}
   - component: {fileID: 4327897833475841677}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: c4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -927,7 +927,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3047648282579554319}
   - component: {fileID: 1012294438054996412}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: c5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1011,7 +1011,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6936798144558908192}
   - component: {fileID: 3212095631917483452}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Flag_181
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1095,7 +1095,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6018045282299000003}
   - component: {fileID: 3878252574992637702}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Flag_165
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1179,7 +1179,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1492004012432452520}
   - component: {fileID: 1350404360107970101}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Flag_198
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1263,7 +1263,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3067783276208275996}
   - component: {fileID: 5369762355427132173}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: c1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1347,7 +1347,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8323290175382010835}
   - component: {fileID: 3266215840953749961}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: c10
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1431,7 +1431,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2410912991023055203}
   - component: {fileID: 3938850090358198325}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Flag_182
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1515,7 +1515,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2560103617596834699}
   - component: {fileID: 6874386949344445146}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Flag_199
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1601,7 +1601,7 @@ GameObject:
   - component: {fileID: 4548307729882596287}
   - component: {fileID: 7118219311997540738}
   - component: {fileID: 5166926634884237725}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: RightEnter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1664,7 +1664,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 302820885, guid: 42fc9dd1869352d42a36c81c94f7f378, type: 3}
+  m_Sprite: {fileID: -1810242496, guid: 42fc9dd1869352d42a36c81c94f7f378, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1701,7 +1701,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_CategoryHash: 6.8564654e-18
   m_labelHash: 3.991422e-13
-  m_SpriteKey: 0.0007128966
+  m_SpriteKey: 0.08342453
 --- !u!1001 &7235090260393253268
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1760,6 +1760,10 @@ PrefabInstance:
     - target: {fileID: 2432406106605034517, guid: 73363e8ebdb82464a98f06e05ee0b997, type: 3}
       propertyPath: m_Name
       value: MilitaryTent
+      objectReference: {fileID: 0}
+    - target: {fileID: 2432406106605034517, guid: 73363e8ebdb82464a98f06e05ee0b997, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 73363e8ebdb82464a98f06e05ee0b997, type: 3}

@@ -32,7 +32,7 @@ namespace Items
             {
                 m_target = null;
                 GameManager.I.GetSaveData().AddItem(data);
-                GameManager.I.Data.SaveGame(); //  save every item gets
+                // GameManager.I.Data.SaveGame(); //  save every item gets
                 Destroy(gameObject);
             }
         }

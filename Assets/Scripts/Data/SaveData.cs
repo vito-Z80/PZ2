@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Core;
-using UnityEngine;
 
 namespace Data
 {
@@ -11,14 +10,14 @@ namespace Data
         public Dictionary<Guid, CharacterData> Characters = new();
         public Dictionary<Guid, ItemData> Items = new();
         public Dictionary<Guid, WeaponData> Weapons = new();
-
-
-        public CharacterData GetCharacterMaster() => Characters.FirstOrDefault(pair => pair.Value.IsMaster).Value
-                                                              ?? throw new KeyNotFoundException("CharacterMaster not found");
+        
+        
+        public CharacterData GetMasterCharacter() => Characters.FirstOrDefault(pair => pair.Value.IsMaster).Value
+                                                     ?? throw new KeyNotFoundException("CharacterMaster not found");
 
         public void AddCharacter(CharacterData baseCharacterData)
         {
-            if (!Items.ContainsKey(baseCharacterData.Guid))
+            if (!Characters.ContainsKey(baseCharacterData.Guid))
             {
                 Characters[baseCharacterData.Guid] = new CharacterData
                 {
@@ -29,7 +28,8 @@ namespace Data
                     Armour = baseCharacterData.Armour,
                     Speed = baseCharacterData.Speed,
                     Level = baseCharacterData.Level,
-                    EquippedWeaponGiud = baseCharacterData.EquippedWeaponGiud
+                    EquippedWeaponGiud = baseCharacterData.EquippedWeaponGiud,
+                    IsMaster = baseCharacterData.IsMaster
                 };
             }
         }
@@ -59,14 +59,11 @@ namespace Data
             }
         }
 
-        
-        //  TODO есть 5 АК-74, удаляем 1, удаляем второй и ексепшн. (Видимо опять разные инстансы данных...)
         public void RemoveWeapon(WeaponData baseWeaponData, int amount = 1)
         {
-            if (Items.ContainsKey(baseWeaponData.Guid))
+            if (Weapons.ContainsKey(baseWeaponData.Guid))
             {
                 Weapons[baseWeaponData.Guid].Amount -= amount;
-                Debug.Log(Weapons[baseWeaponData.Guid].Amount);
                 if (Weapons[baseWeaponData.Guid].Amount <= 0)
                 {
                     Weapons.Remove(baseWeaponData.Guid);
@@ -97,24 +94,36 @@ namespace Data
                     Amount = baseItemData.Amount,
                 };
             }
+            if (Items[baseItemData.Guid].Type == "Ammo")
+            {
+                GameManager.I.OnBulletsUpdateDisplay(Items[baseItemData.Guid].Amount);
+            }
         }
 
         public void RemoveItem(ItemData baseItemData, int amount = 1)
         {
+            
             if (baseItemData.Type == "Weapon")
             {
                 var baseWeaponData = GameManager.I.Data.GetWeaponData(baseItemData.Guid);
-                RemoveWeapon(baseWeaponData,amount);
+                RemoveWeapon(baseWeaponData, amount);
             }
 
+            
+            
             if (Items.ContainsKey(baseItemData.Guid))
             {
                 Items[baseItemData.Guid].Amount -= amount;
+                if (Items[baseItemData.Guid].Type == "Ammo")
+                {
+                    GameManager.I.OnBulletsUpdateDisplay(Items[baseItemData.Guid].Amount);
+                }
                 if (Items[baseItemData.Guid].Amount <= 0)
                 {
                     Items.Remove(baseItemData.Guid);
                 }
             }
+            
         }
     }
 }

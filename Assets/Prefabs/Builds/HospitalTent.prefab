@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 877448543240828111}
   - component: {fileID: 1114464979861086963}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: a5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8775272545137346419}
   - component: {fileID: 106266840209828938}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: a3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -178,7 +178,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4716673926789034231}
   - component: {fileID: 4824285461388757195}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Flag_205
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -262,7 +262,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6380552690117731828}
   - component: {fileID: 5222166249301274889}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: a2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -348,7 +348,7 @@ GameObject:
   - component: {fileID: 554452002522866264}
   - component: {fileID: 7274427795808115427}
   - component: {fileID: 6416828004424747859}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: LeftEnter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -459,7 +459,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5593608643289116404}
   - component: {fileID: 5791328299097469078}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: a1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -543,7 +543,7 @@ GameObject:
   m_Component:
   - component: {fileID: 639455117377276965}
   - component: {fileID: 2373478064100180182}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Flag_190
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -627,7 +627,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2203907980196788687}
   - component: {fileID: 183068569816475303}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: a6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -711,7 +711,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6089478708194821453}
   - component: {fileID: 7314260909345424531}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Flag_204
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -795,7 +795,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5404391028080686993}
   - component: {fileID: 6912828320824218482}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Flag_188
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -879,7 +879,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5581496882698724520}
   - component: {fileID: 8844546555925045554}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Flag_189
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -965,7 +965,7 @@ GameObject:
   - component: {fileID: 6114694115886587029}
   - component: {fileID: 5266018897708991483}
   - component: {fileID: 3908961788263224579}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: RightRoof
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1076,7 +1076,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3562601524747919665}
   - component: {fileID: 6681022037296891075}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1179,6 +1179,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HospitalTent
       objectReference: {fileID: 0}
+    - target: {fileID: 2432406106605034517, guid: 73363e8ebdb82464a98f06e05ee0b997, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 73363e8ebdb82464a98f06e05ee0b997, type: 3}
 --- !u!4 &3449196214758659673 stripped
@@ -1191,6 +1195,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2432406106605034517, guid: 73363e8ebdb82464a98f06e05ee0b997, type: 3}
   m_PrefabInstance: {fileID: 1017714395068811849}
   m_PrefabAsset: {fileID: 0}
+--- !u!210 &8191944184756125563
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3449196214758659676}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
 --- !u!114 &4156104744056181334
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1205,14 +1220,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Library: []
   m_SpriteLibraryAsset: {fileID: 7108339969198208228, guid: 71221f8fda20aee49879e22442c9f43e, type: 3}
---- !u!210 &8191944184756125563
-SortingGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3449196214758659676}
-  m_Enabled: 1
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
