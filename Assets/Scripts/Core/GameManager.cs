@@ -8,6 +8,7 @@ using JetBrains.Annotations;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 using UnityEngine.Tilemaps;
 using Utils;
 using Button = UnityEngine.UI.Button;
@@ -21,6 +22,7 @@ namespace Core
 
         public int maxSpawnEnemies;
         public int killEnemiesForWin;
+        [FormerlySerializedAs("enemyHasTargetAlways")] public bool enemiesAlwaysPursueGoal;
 
         [CanBeNull] SaveData m_saveData;
         public DataManager Data;
@@ -31,6 +33,7 @@ namespace Core
 
         // public List<PlayerController> characters;
         public List<EnemyController> enemies;
+        public List<PlayerController> characters;
 
         Button m_fireButton;
         GameObject m_retryGameMenu;
@@ -56,8 +59,7 @@ namespace Core
             await Task.Yield();
             joystick ??= FindObjectOfType<bl_Joystick>();
             enemies ??= new List<EnemyController>(maxSpawnEnemies);
-            enemies.Clear();
-            // characters ??= new List<PlayerController>(1);
+            characters ??= new List<PlayerController>(5);
             await Init();
             await LevelInstance();
             await LoadGame();
@@ -70,7 +72,7 @@ namespace Core
             await Task.Yield();
             m_gridLevel.gameObject.SetActive(true);
             //  enemy spawns
-            m_enemySpawnerCoroutine = StartCoroutine(Spawner.EnemySpawner(m_masterPlayerController.transform));
+            m_enemySpawnerCoroutine = StartCoroutine(Spawner.EnemySpawner(characters));
             QualitySettings.vSyncCount = 0;
             Application.targetFrameRate = 60;
         }
@@ -109,6 +111,7 @@ namespace Core
             if (m_saveData is null) throw new Exception("No saveData loaded");
             var spawnPosition = new Vector3(11, 11, 0);
             var spawnLayer = GetLayer("Objects").transform;
+            characters.Clear();
             foreach (var pair in m_saveData.Characters)
             {
                 var prefab = Data.CharacterPrefabs[pair.Key];
@@ -116,6 +119,7 @@ namespace Core
                 m_masterPlayerController = Spawner.Spawn<PlayerController>(prefab, spawnPosition, spawnLayer);
                 m_masterPlayerController.Init(characterData);
                 m_masterPlayerController.EquipWeapon(characterData.EquippedWeaponGiud);
+                characters.Add(m_masterPlayerController);
                 if (pair.Value.IsMaster)
                 {
                     var ammo = m_saveData.Items.First(p => p.Value.Type == "Ammo").Value?.Amount ?? 0;
@@ -182,7 +186,7 @@ namespace Core
         [CanBeNull]
         public EnemyController GetNearestEnemy()
         {
-            var distance = m_masterPlayerController.GetWeaponRadius();
+            var distance = m_masterPlayerController.GetDamageRadius();
             var targetId = -1;
             for (var id = 0; id < enemies.Count; id++)
             {
@@ -197,6 +201,27 @@ namespace Core
             }
 
             return targetId >= 0 ? enemies[targetId] : null;
+        }
+
+        [CanBeNull]
+        public T GetNearestObject<T>(List<T> targets, Vector3 point, float detectionRadius) where T : MainCharacter
+        {
+            Debug.Assert(detectionRadius > 0);
+            Debug.Assert(targets.Count > 0);
+            var targetId = -1;
+            for (var id = 0; id < targets.Count; id++)
+            {
+                var obj = targets[id];
+                if (obj is null || obj.IsDestroyed()) continue;
+                var distanceToTarget = Mathf.Abs(Vector2.Distance(obj.transform.position, point));
+                if (distanceToTarget < detectionRadius)
+                {
+                    detectionRadius = distanceToTarget;
+                    targetId = id;
+                }
+            }
+
+            return targetId >= 0 ? targets[targetId] : null;
         }
 
         //  LEVEL

@@ -11,5 +11,6 @@ namespace Data
         public int Level;
         public Guid EquippedWeaponGiud;
         public bool IsMaster;
+        public float DetectionRadius;
     }
 }

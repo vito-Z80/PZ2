@@ -35,7 +35,8 @@
       "Name": "Hero",
       "Type": "Tank",
       "EquippedWeaponGiud": "7374e364-caab-458b-aa6b-525108dcd02c",
-      "IsMaster": true
+      "IsMaster": true,
+      "DetectionRadius": 6
     }
   ],
   "EnemyData": [
@@ -46,7 +47,8 @@
       "Level": 0,
       "Guid": "ab2304e1-06b3-45b6-b3e8-c361edccdee0",
       "Name": "Zombie",
-      "Type": "Enemy"
+      "Type": "Enemy",
+      "DetectionRadius": 6
     },
     {
       "Health": 200,
@@ -55,7 +57,8 @@
       "Level": 0,
       "Guid": "e6bdf692-89ba-4737-85f0-89a844a00101",
       "Name": "Flesh",
-      "Type": "Enemy"
+      "Type": "Enemy",
+      "DetectionRadius": 7
     }
   ],
   "ItemData": [

@@ -66,7 +66,7 @@ namespace Characters
         }
 
 
-        public float GetWeaponRadius()
+        public float GetDamageRadius()
         {
             return equippedWeapon.GetDamageRadius();
         }

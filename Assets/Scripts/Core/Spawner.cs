@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using Characters;
 using Items;
 using Unity.VisualScripting;
@@ -40,6 +41,13 @@ namespace Core
             return instance;
         }
 
+        public Vector3 GetRandomPointInBounds(BoundsInt bounds)
+        {
+            var x = Random.Range(bounds.xMin, bounds.size.x + bounds.xMin);
+            var y = Random.Range(bounds.yMin, bounds.size.y + bounds.yMin);
+            var point = new Vector3(x, y, 0);
+            return point;
+        }
 
         public void SpawnRandomItem(Vector3 position)
         {
@@ -49,7 +57,7 @@ namespace Core
             item.Init(itemData);
         }
 
-        public IEnumerator EnemySpawner(Transform target)
+        public IEnumerator EnemySpawner(List<PlayerController> characters)
         {
             m_gm.enemies.Clear();
             var floor = m_gm.GetLayer("Floor");
@@ -69,13 +77,13 @@ namespace Core
                     var prefab = m_gm.Data.EnemyPrefabs[data.Guid];
                     var enemy = SpawnInBoundsRandomly<EnemyController>(prefab, bounds, objectsLayer.transform);
                     m_gm.enemies.Add(enemy);
-                    enemy.Init(data, target.transform);
+                    enemy.Init(data, characters);
                 }
 
                 yield return new WaitForSeconds(0.3f);
             }
 
-            yield return new WaitForSeconds(2.0f);
+            yield return new WaitForSeconds(1.0f);
             m_gm.Win();
         }
 

@@ -9,15 +9,21 @@ using UnityEngine;
 
 public class Launcher : MonoBehaviour
 {
+    [Header("Одновременно врагов на карте.")] [SerializeField]
+    int maxSpawnEnemies;
 
-    [SerializeField] int maxSpawnEnemies;
-    [SerializeField] int killEnemiesForWin;
-    
+    [Header("Сколько уничтожить врагов до победы.")] [SerializeField]
+    int killEnemiesForWin;
+
+    [Header("Враги преследуют цель всегда или при обнаружении.")] [SerializeField]
+    bool enemiesAlwaysPursueGoal;
+
     void OnEnable()
     {
         var gm = GameManager.I;
         gm.maxSpawnEnemies = maxSpawnEnemies;
         gm.killEnemiesForWin = killEnemiesForWin;
+        gm.enemiesAlwaysPursueGoal = enemiesAlwaysPursueGoal;
         Destroy(gameObject);
     }
 }
