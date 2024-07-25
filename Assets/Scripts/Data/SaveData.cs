@@ -29,7 +29,8 @@ namespace Data
                     Speed = baseCharacterData.Speed,
                     Level = baseCharacterData.Level,
                     EquippedWeaponGiud = baseCharacterData.EquippedWeaponGiud,
-                    IsMaster = baseCharacterData.IsMaster
+                    IsMaster = baseCharacterData.IsMaster,
+                    AddressableName = baseCharacterData.AddressableName
                 };
             }
         }
@@ -54,7 +55,8 @@ namespace Data
                     Speed = baseWeaponData.Speed,
                     Durability = baseWeaponData.Durability,
                     Level = baseWeaponData.Level,
-                    Amount = baseWeaponData.Amount
+                    Amount = baseWeaponData.Amount,
+                    AddressableName = baseWeaponData.AddressableName
                 };
             }
         }
@@ -90,7 +92,7 @@ namespace Data
                     Guid = baseItemData.Guid,
                     Name = baseItemData.Name,
                     Type = baseItemData.Type,
-                    ImageName = baseItemData.ImageName,
+                    AddressableName = baseItemData.AddressableName,
                     Amount = baseItemData.Amount,
                 };
             }

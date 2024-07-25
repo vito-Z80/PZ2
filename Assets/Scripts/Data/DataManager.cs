@@ -44,25 +44,25 @@ namespace Data
             foreach (var data in m_gameDataLibrary.EnemyData)
             {
                 if (!EnemyPrefabs.ContainsKey(data.Guid))
-                    EnemyPrefabs[data.Guid] = await LoadAsset<GameObject>(data.Name);
+                    EnemyPrefabs[data.Guid] = await LoadAsset<GameObject>(data.AddressableName);
             }
 
             foreach (var data in m_gameDataLibrary.CharacterData)
             {
                 if (!CharacterPrefabs.ContainsKey(data.Guid))
-                    CharacterPrefabs[data.Guid] = await LoadAsset<GameObject>(data.Name);
+                    CharacterPrefabs[data.Guid] = await LoadAsset<GameObject>(data.AddressableName);
             }
 
             foreach (var data in m_gameDataLibrary.WeaponData)
             {
                 if (!WeaponPrefabs.ContainsKey(data.Guid))
-                    WeaponPrefabs[data.Guid] = await LoadAsset<GameObject>(data.Name);
+                    WeaponPrefabs[data.Guid] = await LoadAsset<GameObject>(data.AddressableName);
             }
 
             foreach (var data in m_gameDataLibrary.ItemData)
             {
                 if (!ItemSprites.ContainsKey(data.Guid))
-                    ItemSprites[data.Guid] = await LoadAsset<Sprite>(data.ImageName);
+                    ItemSprites[data.Guid] = await LoadAsset<Sprite>(data.AddressableName);
             }
 
             //  одиночки

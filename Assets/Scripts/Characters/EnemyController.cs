@@ -40,7 +40,8 @@ namespace Characters
                 Armour = enemyData.Armour,
                 Speed = enemyData.Speed,
                 Level = enemyData.Level,
-                DetectionRadius = enemyData.DetectionRadius
+                DetectionRadius = enemyData.DetectionRadius,
+                AddressableName = enemyData.AddressableName
             };
             m_rigidbody2D = GetComponent<Rigidbody2D>();
             var speedCoefficient = Random.Range(1.0f, 1.2f);

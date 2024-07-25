@@ -30,7 +30,8 @@ namespace Weapon
                 Speed = weaponData.Speed,
                 Durability = weaponData.Durability,
                 Level = weaponData.Level,
-                Radius = weaponData.Radius
+                Radius = weaponData.Radius,
+                AddressableName = weaponData.AddressableName
             };
         }
 
